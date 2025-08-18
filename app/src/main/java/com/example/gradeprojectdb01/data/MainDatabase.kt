@@ -4,35 +4,39 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import androidx.room.TypeConverters
+import com.example.gradeprojectdb01.data.converters.TunSysParamTypeConverter
 import com.example.gradeprojectdb01.data.daos.NoteDao
 import com.example.gradeprojectdb01.data.daos.ProfileDao
 import com.example.gradeprojectdb01.data.daos.ProfileNoteCrossRefDao
-import com.example.gradeprojectdb01.data.daos.SystemParameterDao
+import com.example.gradeprojectdb01.data.daos.TunSysParameterDao
 import com.example.gradeprojectdb01.data.daos.TuningSystemDao
 import com.example.gradeprojectdb01.data.daos.TuningSystemNoteCrossRefDao
-import com.example.gradeprojectdb01.data.models.Note
-import com.example.gradeprojectdb01.data.models.Profile
-import com.example.gradeprojectdb01.data.models.ProfileNoteCrossRef
-import com.example.gradeprojectdb01.data.models.SystemParameter
-import com.example.gradeprojectdb01.data.models.TuningSystem
-import com.example.gradeprojectdb01.data.models.TuningSystemNoteCrossRef
+import com.example.gradeprojectdb01.data.entities.Note
+import com.example.gradeprojectdb01.data.entities.Profile
+import com.example.gradeprojectdb01.data.entities.ProfileNoteCrossRef
+import com.example.gradeprojectdb01.data.entities.TunSysParameter
+import com.example.gradeprojectdb01.data.entities.TuningSystem
+import com.example.gradeprojectdb01.data.entities.TuningSystemNoteCrossRef
 
 @Database(entities = [
     Profile::class,
     TuningSystem::class,
     Note::class,
-    SystemParameter::class,
+    TunSysParameter::class,
     ProfileNoteCrossRef::class,
     TuningSystemNoteCrossRef::class
 ],
     version = 1, exportSchema = false)
+
+@TypeConverters (TunSysParamTypeConverter::class)
 
 abstract class MainDatabase : RoomDatabase(){
 
     abstract val profileDao: ProfileDao
     abstract val tuningSystemDao: TuningSystemDao
     abstract val noteDao: NoteDao
-    abstract val systemParameterDao: SystemParameterDao
+    abstract val tunSysParameterDao: TunSysParameterDao
     abstract val profileNoteDao: ProfileNoteCrossRefDao
     abstract val tuningSystemNoteDao: TuningSystemNoteCrossRefDao
 
