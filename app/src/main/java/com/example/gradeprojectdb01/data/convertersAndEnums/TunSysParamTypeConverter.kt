@@ -1,7 +1,6 @@
-package com.example.gradeprojectdb01.data.converters
+package com.example.gradeprojectdb01.data.convertersAndEnums
 
 import androidx.room.TypeConverter
-import com.example.gradeprojectdb01.data.entities.ParamValType
 
 class TunSysParamTypeConverter {
     @TypeConverter
