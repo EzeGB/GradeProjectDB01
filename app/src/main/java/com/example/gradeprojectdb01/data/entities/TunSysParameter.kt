@@ -2,13 +2,15 @@ package com.example.gradeprojectdb01.data.entities
 
 import androidx.room.Entity
 import androidx.room.ForeignKey
+import androidx.room.Index
 import androidx.room.PrimaryKey
+import com.example.gradeprojectdb01.data.convertersAndEnums.ParamValType
 
 @Entity (foreignKeys = [ForeignKey(entity = TuningSystem::class,
     parentColumns = arrayOf("tunSysId"),
     childColumns = arrayOf("tunSysId"),
     onDelete = ForeignKey.CASCADE)],
-    indices = [androidx.room.Index(value = ["tunSysId"])])
+    indices = [Index("tunSysId")])
 
 data class TunSysParameter (
     @PrimaryKey (autoGenerate = true)
@@ -18,4 +20,3 @@ data class TunSysParameter (
     val valueName: String,
     val value: String,
 )
-enum class ParamValType {INT, DOUBLE, STRING}
