@@ -4,11 +4,11 @@ import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.Index
 
-@Entity (primaryKeys = ["tunSysId","noteId"],
+@Entity (primaryKeys = ["instrumentId","noteId"],
 
-    foreignKeys = [ForeignKey(entity = TuningSystem::class,
-        parentColumns = arrayOf("tunSysId"),
-        childColumns = arrayOf("tunSysId"),
+    foreignKeys = [ForeignKey(entity = Instrument::class,
+        parentColumns = arrayOf("instrumentId"),
+        childColumns = arrayOf("instrumentId"),
         onDelete = ForeignKey.CASCADE),
 
         ForeignKey(entity = Note::class,
@@ -16,10 +16,9 @@ import androidx.room.Index
             childColumns = arrayOf("noteId"),
             onDelete = ForeignKey.CASCADE)],
 
-    indices = [Index("tunSysId"), Index("noteId")]
-)
-
-data class TuningSystemNoteCrossRef (
-    val tunSysId: Int,
+    indices = [Index("instrumentId"), Index("noteId")]
+    )
+data class InstrumentNoteCrossRef (
+    val instrumentId: Int,
     val noteId: Int
 )
