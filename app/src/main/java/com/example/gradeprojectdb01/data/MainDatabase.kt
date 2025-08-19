@@ -5,26 +5,26 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
-import com.example.gradeprojectdb01.data.converters.TunSysParamTypeConverter
+import com.example.gradeprojectdb01.data.convertersAndEnums.TunSysParamTypeConverter
 import com.example.gradeprojectdb01.data.daos.NoteDao
-import com.example.gradeprojectdb01.data.daos.ProfileDao
-import com.example.gradeprojectdb01.data.daos.ProfileNoteCrossRefDao
+import com.example.gradeprojectdb01.data.daos.InstrumentDao
+import com.example.gradeprojectdb01.data.daos.InstrumentNoteCrossRefDao
 import com.example.gradeprojectdb01.data.daos.TunSysParameterDao
 import com.example.gradeprojectdb01.data.daos.TuningSystemDao
 import com.example.gradeprojectdb01.data.daos.TuningSystemNoteCrossRefDao
 import com.example.gradeprojectdb01.data.entities.Note
-import com.example.gradeprojectdb01.data.entities.Profile
-import com.example.gradeprojectdb01.data.entities.ProfileNoteCrossRef
+import com.example.gradeprojectdb01.data.entities.Instrument
+import com.example.gradeprojectdb01.data.entities.InstrumentNoteCrossRef
 import com.example.gradeprojectdb01.data.entities.TunSysParameter
 import com.example.gradeprojectdb01.data.entities.TuningSystem
 import com.example.gradeprojectdb01.data.entities.TuningSystemNoteCrossRef
 
 @Database(entities = [
-    Profile::class,
+    Instrument::class,
     TuningSystem::class,
     Note::class,
     TunSysParameter::class,
-    ProfileNoteCrossRef::class,
+    InstrumentNoteCrossRef::class,
     TuningSystemNoteCrossRef::class
 ],
     version = 1, exportSchema = false)
@@ -33,11 +33,11 @@ import com.example.gradeprojectdb01.data.entities.TuningSystemNoteCrossRef
 
 abstract class MainDatabase : RoomDatabase(){
 
-    abstract val profileDao: ProfileDao
+    abstract val profileDao: InstrumentDao
     abstract val tuningSystemDao: TuningSystemDao
     abstract val noteDao: NoteDao
     abstract val tunSysParameterDao: TunSysParameterDao
-    abstract val profileNoteDao: ProfileNoteCrossRefDao
+    abstract val profileNoteDao: InstrumentNoteCrossRefDao
     abstract val tuningSystemNoteDao: TuningSystemNoteCrossRefDao
 
     companion object {

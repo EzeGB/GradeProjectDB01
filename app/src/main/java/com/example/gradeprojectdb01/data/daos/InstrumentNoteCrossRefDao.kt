@@ -1,4 +1,4 @@
 package com.example.gradeprojectdb01.data.daos
 
-interface ProfileNoteCrossRefDao {
+interface InstrumentNoteCrossRefDao {
 }
