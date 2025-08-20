@@ -1,18 +1,72 @@
 package com.example.gradeprojectdb01.data.daos
 
-import androidx.lifecycle.LiveData
+import androidx.room.Delete
+import androidx.room.Insert
+import androidx.room.OnConflictStrategy
+import androidx.room.Query
+import androidx.room.Transaction
+import androidx.room.Update
 import com.example.gradeprojectdb01.data.entities.Note
+import com.example.gradeprojectdb01.data.relations.NoteWithInstruments
+import com.example.gradeprojectdb01.data.relations.NoteWithTuningSystems
+import kotlinx.coroutines.flow.Flow
 
 interface NoteDao {
-    suspend fun addNote(note: Note)
+    //CREATE BLOCK
+    @Insert(onConflict= OnConflictStrategy.REPLACE)
+    suspend fun addNote(note: Note):Long
 
-    fun readAllNotesLive(): LiveData<List<Note>>
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertMultipleNotes(notes: List<Note>): List<Long>
 
-    suspend fun readAllNotes(): List<Note>
+    //READ BLOCK
+    @Query("SELECT * FROM Note ORDER BY noteId ASC")
+    suspend fun getAllNotes(): List<Note>
 
+    @Query("SELECT * FROM Note ORDER BY noteId ASC")
+    fun observeAllNotes(): Flow<List<Note>>
+
+    @Query("SELECT * FROM Note WHERE noteId = :noteId")
+    suspend fun getNoteById(noteId: Long): Note?
+
+    @Query("SELECT * FROM Note WHERE noteId = :noteId")
+    fun observeNoteById(noteId: Long): Flow<Note?>
+
+    //Relations
+    @Transaction
+    @Query("SELECT * FROM Note WHERE noteId = :noteId")
+    suspend fun getNoteWithInstruments(noteId:Long): List<NoteWithInstruments>
+
+    @Transaction
+    @Query("SELECT * FROM Note WHERE noteId = :noteId")
+    suspend fun getNoteWithTuningSystems(noteId:Long): List<NoteWithTuningSystems>
+
+    @Transaction
+    @Query("SELECT * FROM Note WHERE noteId = :noteId")
+    fun observeNoteWithInstruments(noteId:Long): Flow<List<NoteWithInstruments>>
+
+    @Transaction
+    @Query("SELECT * FROM Note WHERE noteId = :noteId")
+    fun observeNoteWithTuningSystems(noteId:Long): Flow<List<NoteWithTuningSystems>>
+
+    //UPDATE BLOCK
+    @Update
     suspend fun updateNote(note: Note)
 
+    @Query("UPDATE Note SET name = :name WHERE noteId = :noteId")
+    suspend fun updateNoteName(noteId: Long, name:String)
+
+    @Query("UPDATE Note SET alteration = :alteration WHERE noteId = :noteId")
+    suspend fun updateNoteAlteration(noteId: Long, alteration:String)
+
+    @Delete
     suspend fun deleteNote(note: Note)
 
+    @Query("DELETE FROM Note WHERE noteId = :noteId")
+    suspend fun deleteById(noteId: Long)
+
+    @Query("DELETE FROM Note")
     suspend fun deleteAllNotes()
+
+
 }

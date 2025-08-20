@@ -6,6 +6,6 @@ import androidx.room.PrimaryKey
 @Entity
 data class TuningSystem(
     @PrimaryKey (autoGenerate = true)
-    val tunSysId: Int,
+    val tunSysId: Long,
     val algorithm: String
 )
