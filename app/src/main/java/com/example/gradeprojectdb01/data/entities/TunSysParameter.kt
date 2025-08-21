@@ -18,5 +18,5 @@ data class TunSysParameter (
     val tunSysId: Long,
     val valueType : ParamValType,
     val valueName: String,
-    val value: String,
+    val value: String
 )
