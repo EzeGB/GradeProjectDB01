@@ -25,11 +25,11 @@ interface NoteDao {
     @Query("SELECT * FROM Note WHERE noteId = :noteId")
     suspend fun getNoteById(noteId: Long): Note?
 
-    @Query("SELECT * FROM Note WHERE noteId = :noteId")
-    fun observeNoteById(noteId: Long): Flow<Note?>
-
     @Query("SELECT * FROM Note ORDER BY noteId ASC")
     suspend fun getAllNotes(): List<Note>
+
+    @Query("SELECT * FROM Note WHERE noteId = :noteId")
+    fun observeNoteById(noteId: Long): Flow<Note?>
 
     @Query("SELECT * FROM Note ORDER BY noteId ASC")
     fun observeAllNotes(): Flow<List<Note>>
@@ -55,6 +55,9 @@ interface NoteDao {
     @Update
     suspend fun updateNote(note: Note)
 
+    @Update
+    suspend fun updateNotes(notes: List<Note>)
+
     @Query("UPDATE Note SET name = :name WHERE noteId = :noteId")
     suspend fun updateNoteName(noteId: Long, name:String)
 
@@ -66,7 +69,13 @@ interface NoteDao {
     suspend fun deleteNote(note: Note)
 
     @Query("DELETE FROM Note WHERE noteId = :noteId")
-    suspend fun deleteById(noteId: Long)
+    suspend fun deleteNoteById(noteId: Long)
+
+    @Delete
+    suspend fun deleteNotes(notes: List<Note>)
+
+    @Query("DELETE FROM Note WHERE noteId IN (:noteIds)")
+    suspend fun deleteNotesByIds(noteIds: List<Long>)
 
     @Query("DELETE FROM Note")
     suspend fun deleteAllNotes()

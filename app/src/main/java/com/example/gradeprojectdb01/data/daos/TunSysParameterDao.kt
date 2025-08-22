@@ -23,11 +23,11 @@ interface TunSysParameterDao {
     @Query("SELECT * FROM TunSysParameter WHERE tunSysParamId = :tunSysParameterId")
     suspend fun getTunSysParameterById(tunSysParameterId: Long): TunSysParameter?
 
-    @Query("SELECT * FROM TunSysParameter WHERE tunSysParamId = :tunSysParameterId")
-    fun observeTunSysParameterById(tunSysParameterId: Long): Flow<TunSysParameter?>
-
     @Query("SELECT * FROM TunSysParameter ORDER BY tunSysParamId ASC")
     suspend fun getAllTunSysParameters(): List<TunSysParameter>
+
+    @Query("SELECT * FROM TunSysParameter WHERE tunSysParamId = :tunSysParameterId")
+    fun observeTunSysParameterById(tunSysParameterId: Long): Flow<TunSysParameter?>
 
     @Query("SELECT * FROM TunSysParameter ORDER BY tunSysParamId ASC")
     fun observeAllTunSysParameters(): Flow<List<TunSysParameter>>
@@ -35,6 +35,9 @@ interface TunSysParameterDao {
     //UPDATE BLOCK
     @Update
     suspend fun updateTunSysParam(tunSysParameter: TunSysParameter)
+
+    @Update
+    suspend fun updateTunSysParams(tunSysParameters: List<TunSysParameter>)
 
     @Query("UPDATE TunSysParameter SET value = :value WHERE tunSysParamId = :tunSysParameterId")
     suspend fun updateTunSysParamValue(tunSysParameterId: Long, value: String)
@@ -45,6 +48,12 @@ interface TunSysParameterDao {
 
     @Query("DELETE FROM TunSysParameter WHERE tunSysParamId = :tunSysParameterId")
     suspend fun deleteTunSysParameterById(tunSysParameterId: Long)
+
+    @Delete
+    suspend fun deleteTunSysParameters(tunSysParameters: List<TunSysParameter>)
+
+    @Query("DELETE FROM TunSysParameter WHERE tunSysParamId IN (:tunSysParamIds)")
+    suspend fun deleteTunSysParametersByIds(tunSysParamIds: List<Long>)
 
     @Query("DELETE FROM TunSysParameter")
     suspend fun deleteAllTunSysParameters()
