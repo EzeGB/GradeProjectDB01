@@ -25,11 +25,11 @@ interface NoteDao {
     @Query("SELECT * FROM Note WHERE noteId = :noteId")
     suspend fun getNoteById(noteId: Long): Note?
 
-    @Query("SELECT * FROM Note WHERE noteId = :noteId")
-    fun observeNoteById(noteId: Long): Flow<Note?>
-
     @Query("SELECT * FROM Note ORDER BY noteId ASC")
     suspend fun getAllNotes(): List<Note>
+
+    @Query("SELECT * FROM Note WHERE noteId = :noteId")
+    fun observeNoteById(noteId: Long): Flow<Note?>
 
     @Query("SELECT * FROM Note ORDER BY noteId ASC")
     fun observeAllNotes(): Flow<List<Note>>

@@ -23,11 +23,11 @@ interface TunSysParameterDao {
     @Query("SELECT * FROM TunSysParameter WHERE tunSysParamId = :tunSysParameterId")
     suspend fun getTunSysParameterById(tunSysParameterId: Long): TunSysParameter?
 
-    @Query("SELECT * FROM TunSysParameter WHERE tunSysParamId = :tunSysParameterId")
-    fun observeTunSysParameterById(tunSysParameterId: Long): Flow<TunSysParameter?>
-
     @Query("SELECT * FROM TunSysParameter ORDER BY tunSysParamId ASC")
     suspend fun getAllTunSysParameters(): List<TunSysParameter>
+
+    @Query("SELECT * FROM TunSysParameter WHERE tunSysParamId = :tunSysParameterId")
+    fun observeTunSysParameterById(tunSysParameterId: Long): Flow<TunSysParameter?>
 
     @Query("SELECT * FROM TunSysParameter ORDER BY tunSysParamId ASC")
     fun observeAllTunSysParameters(): Flow<List<TunSysParameter>>

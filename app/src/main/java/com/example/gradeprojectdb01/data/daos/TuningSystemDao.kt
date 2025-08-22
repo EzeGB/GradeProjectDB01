@@ -12,6 +12,7 @@ import com.example.gradeprojectdb01.data.entities.TuningSystem
 import com.example.gradeprojectdb01.data.relations.NoteWithInstruments
 import com.example.gradeprojectdb01.data.relations.NoteWithTuningSystems
 import com.example.gradeprojectdb01.data.relations.TuningSystemWithInstruments
+import com.example.gradeprojectdb01.data.relations.TuningSystemWithNotes
 import com.example.gradeprojectdb01.data.relations.TuningSystemWithParameters
 import kotlinx.coroutines.flow.Flow
 
@@ -29,11 +30,11 @@ interface TuningSystemDao {
     @Query("SELECT * FROM TuningSystem WHERE tunSysId = :tunSysId")
     suspend fun getTuningSystemById(tunSysId: Long): TuningSystem?
 
-    @Query("SELECT * FROM TuningSystem WHERE tunSysId = :tunSysId")
-    fun observeTuningSystemById(tunSysId: Long): Flow<TuningSystem?>
-
     @Query("SELECT * FROM TuningSystem ORDER BY tunSysId ASC")
     suspend fun getAllTuningSystems(): List<TuningSystem>
+
+    @Query("SELECT * FROM TuningSystem WHERE tunSysId = :tunSysId")
+    fun observeTuningSystemById(tunSysId: Long): Flow<TuningSystem?>
 
     @Query("SELECT * FROM TuningSystem ORDER BY tunSysId ASC")
     fun observeAllTuningSystems(): Flow<List<TuningSystem>>
@@ -41,15 +42,23 @@ interface TuningSystemDao {
     // Relations
     @Transaction
     @Query("SELECT * FROM TuningSystem WHERE tunSysId = :tunSysId")
-    suspend fun tuningSystemWithInstruments(tunSysId: Long): TuningSystemWithInstruments?
+    suspend fun getTuningSystemWithInstruments(tunSysId: Long): TuningSystemWithInstruments?
 
     @Transaction
     @Query("SELECT * FROM TuningSystem WHERE tunSysId = :tunSysId")
-    suspend fun tuningSystemWithParameters(tunSysId: Long): TuningSystemWithParameters?
+    suspend fun getTuningSystemWithNotes(tunSysId: Long): TuningSystemWithNotes?
+
+    @Transaction
+    @Query("SELECT * FROM TuningSystem WHERE tunSysId = :tunSysId")
+    suspend fun getTuningSystemWithParameters(tunSysId: Long): TuningSystemWithParameters?
 
     @Transaction
     @Query("SELECT * FROM TuningSystem WHERE tunSysId = :tunSysId")
     fun observeTuningSystemWithInstruments(tunSysId: Long): Flow<TuningSystemWithInstruments?>
+
+    @Transaction
+    @Query("SELECT * FROM TuningSystem WHERE tunSysId = :tunSysId")
+    fun observeTuningSystemWithNotes(tunSysId: Long): Flow<TuningSystemWithNotes?>
 
     @Transaction
     @Query("SELECT * FROM TuningSystem WHERE tunSysId = :tunSysId")
