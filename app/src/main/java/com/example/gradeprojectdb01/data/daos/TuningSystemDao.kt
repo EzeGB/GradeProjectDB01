@@ -78,11 +78,14 @@ interface TuningSystemDao {
     @Delete
     suspend fun deleteTuningSystem(tuningSystem: TuningSystem)
 
+    @Query("DELETE FROM TuningSystem WHERE tunSysId = :tunSysId")
+    suspend fun deleteTuningSystemById(tunSysId: Long)
+
     @Delete
     suspend fun deleteTuningSystems(tuningSystems: List<TuningSystem>)
 
-    @Query("DELETE FROM TuningSystem WHERE tunSysId = :tunSysId")
-    suspend fun deleteTuningSystemById(tunSysId: Long)
+    @Query("DELETE FROM TuningSystem WHERE tunSysId IN (:tunSysId)")
+    suspend fun deleteTuningSystemsByIds(tunSysIds: List<Long>)
 
     @Query("DELETE FROM TuningSystem")
     suspend fun deleteAllTuningSystems()

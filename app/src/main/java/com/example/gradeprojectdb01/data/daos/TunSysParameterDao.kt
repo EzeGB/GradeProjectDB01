@@ -49,6 +49,12 @@ interface TunSysParameterDao {
     @Query("DELETE FROM TunSysParameter WHERE tunSysParamId = :tunSysParameterId")
     suspend fun deleteTunSysParameterById(tunSysParameterId: Long)
 
+    @Delete
+    suspend fun deleteTunSysParameters(tunSysParameters: List<TunSysParameter>)
+
+    @Query("DELETE FROM TunSysParameter WHERE tunSysParamId IN (:tunSysParamIds)")
+    suspend fun deleteTunSysParametersByIds(tunSysParamIds: List<Long>)
+
     @Query("DELETE FROM TunSysParameter")
     suspend fun deleteAllTunSysParameters()
 }

@@ -59,11 +59,14 @@ interface InstrumentDao {
     @Delete
     suspend fun deleteInstrument(instrument: Instrument)
 
+    @Query("DELETE FROM Instrument WHERE instrumentId = :instrumentId")
+    suspend fun deleteById(instrumentId: Long)
+
     @Delete
     suspend fun deleteInstruments(instruments: List<Instrument>)
 
-    @Query("DELETE FROM Instrument WHERE instrumentId = :instrumentId")
-    suspend fun deleteById(instrumentId: Long)
+    @Query("DELETE FROM Instrument WHERE instrumentId IN (:instrumentIds)")
+    suspend fun deleteInstrumentsByIds(instrumentIds: List<Long>)
 
     @Query("DELETE FROM Instrument")
     suspend fun deleteAllInstruments()
