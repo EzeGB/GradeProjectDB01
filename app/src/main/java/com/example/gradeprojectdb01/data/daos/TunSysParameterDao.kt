@@ -36,6 +36,9 @@ interface TunSysParameterDao {
     @Update
     suspend fun updateTunSysParam(tunSysParameter: TunSysParameter)
 
+    @Update
+    suspend fun updateTunSysParams(tunSysParameters: List<TunSysParameter>)
+
     @Query("UPDATE TunSysParameter SET value = :value WHERE tunSysParamId = :tunSysParameterId")
     suspend fun updateTunSysParamValue(tunSysParameterId: Long, value: String)
 

@@ -68,12 +68,18 @@ interface TuningSystemDao {
     @Update
     suspend fun updateTuningSystem(tuningSystem: TuningSystem)
 
+    @Update
+    suspend fun updateTuningSystems(tuningSystems: List<TuningSystem>)
+
     @Query("UPDATE TuningSystem SET algorithm = :algorithm WHERE tunSysId = :tunSysId")
     suspend fun updateTuningSystemAlgorithm(tunSysId: Long, algorithm: String)
 
     // DELETE
     @Delete
     suspend fun deleteTuningSystem(tuningSystem: TuningSystem)
+
+    @Delete
+    suspend fun deleteTuningSystems(tuningSystems: List<TuningSystem>)
 
     @Query("DELETE FROM TuningSystem WHERE tunSysId = :tunSysId")
     suspend fun deleteTuningSystemById(tunSysId: Long)

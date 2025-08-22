@@ -46,6 +46,9 @@ interface InstrumentDao {
     @Update
     suspend fun updateInstrument(instrument: Instrument)
 
+    @Update
+    suspend fun updateInstruments(instruments: List<Instrument>)
+
     @Query("UPDATE Instrument SET tunSysId = :tunSysId WHERE instrumentId = :instrumentId")
     suspend fun updateInstrumentTunSys (instrumentId: Long, tunSysId:Long)
 
@@ -55,6 +58,9 @@ interface InstrumentDao {
     //DELETE BLOCK
     @Delete
     suspend fun deleteInstrument(instrument: Instrument)
+
+    @Delete
+    suspend fun deleteInstruments(instruments: List<Instrument>)
 
     @Query("DELETE FROM Instrument WHERE instrumentId = :instrumentId")
     suspend fun deleteById(instrumentId: Long)
