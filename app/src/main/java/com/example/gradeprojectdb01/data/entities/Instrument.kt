@@ -12,6 +12,6 @@ import androidx.room.PrimaryKey
 data class Instrument (
     @PrimaryKey (autoGenerate = true)
     val instrumentId: Long,
-    val tunSysId: Long,
+    var tunSysId: Long,
     val name: String
 )

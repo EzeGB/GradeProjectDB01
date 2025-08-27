@@ -15,7 +15,7 @@ import com.example.gradeprojectdb01.data.convertersAndEnums.ParamValType
 data class TunSysParameter (
     @PrimaryKey (autoGenerate = true)
     val tunSysParamId: Long,
-    val tunSysId: Long,
+    var tunSysId: Long,
     val valueType : ParamValType,
     val valueName: String,
     val value: String

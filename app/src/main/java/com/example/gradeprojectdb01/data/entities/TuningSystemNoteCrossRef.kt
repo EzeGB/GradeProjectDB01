@@ -20,6 +20,6 @@ import androidx.room.Index
 )
 
 data class TuningSystemNoteCrossRef (
-    val tunSysId: Long,
-    val noteId: Long
+    var tunSysId: Long,
+    var noteId: Long
 )
