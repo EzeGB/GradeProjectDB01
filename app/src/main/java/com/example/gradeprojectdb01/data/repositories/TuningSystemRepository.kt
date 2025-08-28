@@ -10,32 +10,12 @@ import com.example.gradeprojectdb01.data.entities.TuningSystem
 import com.example.gradeprojectdb01.data.entities.TuningSystemNoteCrossRef
 import com.example.gradeprojectdb01.data.relations.TuningSystemWithParameters
 
-class TuningSystemRepository (private val tuningSystemDao: TuningSystemDao,
-    private val tunSysParameterDao: TunSysParameterDao,
-    private val noteDao: NoteDao,
-    private val tunSysNoteCrossRefDao: TuningSystemNoteCrossRefDao){
+class TuningSystemRepository (private val tuningSystemDao: TuningSystemDao){
 
-    suspend fun insertTunSys(tuningSystem: TuningSystem,
-                             tunSysParams: List<TunSysParameter>){
-        val tunSysId = tuningSystemDao.insertTuningSystem(tuningSystem)
-        tunSysParams.forEach {
-            it.tunSysId = tunSysId
-            // TODO it.valueType = inferValueType(it.value)
-            tunSysParameterDao.insertTunSysParameter(it)
-        }
-        val notes = generateNotes(tuningSystemDao.getTuningSystemWithParameters(tunSysId))
-        noteDao.insertAllNotes(notes)
-        notes.forEach {
-            val reference = TuningSystemNoteCrossRef(tunSysId,it.noteId)
-            tunSysNoteCrossRefDao.insertTunSysNoteCrossRef(reference)
-        }
+    suspend fun insertTunSys(tuningSystem: TuningSystem):Long{
+        return tuningSystemDao.insertTuningSystem(tuningSystem)
     }
 
-    private fun generateNotes(tuningSystem: TuningSystemWithParameters?): List<Note>{
-        //TODO
-        return listOf(
-            Note(0L, 440.0, "A", "natural", 4, 1.0),
-            Note(1L, 493.88, "B", "natural", 4, 1.3)
-        )
-    }
+    suspend fun getTunSysWithParams(tunSysId:Long) =
+        tuningSystemDao.getTuningSystemWithParameters(tunSysId)
 }
