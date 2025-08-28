@@ -10,20 +10,20 @@ import com.example.gradeprojectdb01.data.repositories.TunSysParameterRepository
 import com.example.gradeprojectdb01.data.repositories.TuningSystemNoteCrossRefRepository
 import com.example.gradeprojectdb01.data.repositories.TuningSystemRepository
 
-public class TuningSystemService (
+class TuningSystemService (
     private val tunSysRepo: TuningSystemRepository,
     private val tunSysParamRepo: TunSysParameterRepository,
     private val noteRepo: NoteRepository,
     private val tunSysNoteCrossRefRepo: TuningSystemNoteCrossRefRepository
 ) {
     suspend fun createTuningSystem(tuningSystem: TuningSystem, tunSysParams:List<TunSysParameter>) {
-        val tunSysId = tunSysRepo.insertTunSys(tuningSystem)
+        val tunSysId = tunSysRepo.insertTuningSystem(tuningSystem)
         tunSysParams.forEach {
             it.tunSysId = tunSysId
             // TODO it.valueType = inferValueType(it.value)
-            tunSysParamRepo.insertTunSysParam(it)
+            tunSysParamRepo.insertTunSysParameter(it)
         }
-        val notes = generateNotes(tunSysRepo.getTunSysWithParams(tunSysId))
+        val notes = generateNotes(tunSysRepo.getTuningSystemWithParameters(tunSysId))
         val notesIds = noteRepo.insertAllNotes(notes)
         notesIds.forEach {
             val reference = TuningSystemNoteCrossRef(tunSysId, it)
