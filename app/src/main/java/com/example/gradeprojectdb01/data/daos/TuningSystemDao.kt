@@ -38,7 +38,7 @@ interface TuningSystemDao {
 
     @Query("SELECT * FROM TuningSystem WHERE" +
             " algorithm=:algorithm AND baseFrequency=:baseFrequency")
-    fun getByAlgorithmAndBaseFrequency(algorithm:String, baseFrequency: Double): List<TuningSystem?>
+    fun getByAlgorithmAndBaseFrequency(algorithm:String, baseFrequency: Double): List<TuningSystem>
 
     @Query("SELECT * FROM TuningSystem ORDER BY tunSysId ASC")
     fun observeAllTuningSystems(): Flow<List<TuningSystem>>
@@ -55,6 +55,10 @@ interface TuningSystemDao {
     @Transaction
     @Query("SELECT * FROM TuningSystem WHERE tunSysId = :tunSysId")
     suspend fun getTuningSystemWithParameters(tunSysId: Long): TuningSystemWithParameters?
+
+    @Transaction
+    @Query("SELECT * FROM TuningSystem WHERE tunSysId = :tunSysId")
+    suspend fun getExistingTuningSystemWithParameters(tunSysId: Long): TuningSystemWithParameters
 
     @Transaction
     @Query("SELECT * FROM TuningSystem WHERE tunSysId = :tunSysId")

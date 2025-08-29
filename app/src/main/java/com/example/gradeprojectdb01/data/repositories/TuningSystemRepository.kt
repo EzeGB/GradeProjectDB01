@@ -31,7 +31,7 @@ class TuningSystemRepository(private val tuningSystemDao: TuningSystemDao) {
         return tuningSystemDao.observeTuningSystemById(tunSysId)
     }
 
-    fun getByAlgorithmAndBaseFrequency(algorithm: String,baseFrequency:Double): List<TuningSystem?>{
+    fun getByAlgorithmAndBaseFrequency(algorithm: String,baseFrequency:Double): List<TuningSystem>{
         return tuningSystemDao.getByAlgorithmAndBaseFrequency(algorithm,baseFrequency)
     }
 
@@ -50,6 +50,10 @@ class TuningSystemRepository(private val tuningSystemDao: TuningSystemDao) {
 
     suspend fun getTuningSystemWithParameters(tunSysId: Long): TuningSystemWithParameters? {
         return tuningSystemDao.getTuningSystemWithParameters(tunSysId)
+    }
+
+    suspend fun getExistingTuningSystemWithParameters(tunSysId: Long): TuningSystemWithParameters {
+        return tuningSystemDao.getExistingTuningSystemWithParameters(tunSysId)
     }
 
     fun observeTuningSystemWithInstruments(tunSysId: Long): Flow<TuningSystemWithInstruments?> {
