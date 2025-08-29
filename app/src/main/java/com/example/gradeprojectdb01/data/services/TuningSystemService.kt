@@ -17,7 +17,8 @@ class TuningSystemService (
     private val tunSysNoteCrossRefRepo: TuningSystemNoteRepository
 ) {
     suspend fun createTuningSystem(tuningSystem: TuningSystem, tunSysParams:List<TunSysParameter>) {
-        val tunSysId = tunSysRepo.insertTuningSystem(tuningSystem)
+        //check if tunSys exists
+        val tunSysId = findMatchingTunSys(tuningSystem,tunSysParams)?: tunSysRepo.insertTuningSystem(tuningSystem)
         tunSysParams.forEach {
             it.tunSysId = tunSysId
             // TODO it.valueType = inferValueType(it.value)
@@ -26,8 +27,9 @@ class TuningSystemService (
         val notes = generateNotes(tunSysRepo.getTuningSystemWithParameters(tunSysId))
         val notesIds = noteRepo.insertAllNotes(notes)
         notesIds.forEach {
-            val reference = TuningSystemNote(tunSysId, it)
+            val reference = TuningSystemNote(tunSysId, it,"","","")
             tunSysNoteCrossRefRepo.insertTunSysNoteCrossRef(reference)
+            //TODO they must define their names and etc
         }
     }
 
@@ -40,11 +42,28 @@ class TuningSystemService (
         }
     }
 
-    private fun tunSysMatchExists(): Boolean{
-        //TODO
-        return false
+    suspend fun findMatchingTunSys(newTunSys: TuningSystem, newParams: List<TunSysParameter>): Long? {
+        val candidates = tunSysRepo.getByAlgorithmAndBaseFrequency(
+            newTunSys.algorithm,
+            newTunSys.baseFrequency)
+        if (!candidates.isEmpty()) {
+            for (candidate in candidates) {
+                val candidateParams = candidate?.let { tunSysRepo.getTuningSystemWithParameters(it.tunSysId) }?.tunSysParams
+                if (candidateParams?.size == newParams.size &&
+                    candidateParams.all { cp ->
+                        newParams.any { np ->
+                            np.valueType == cp.valueType &&
+                                    np.valueName == cp.valueName &&
+                                    np.value == cp.value
+                        }
+                    }
+                ) {
+                    return candidate.tunSysId // Found exact match
+                }
+            }
+        }
+        return null // No match
     }
-
     suspend fun canDeleteTunSys(tunSysId: Long): Boolean {
         val tunSysWithInstruments = tunSysRepo.getTuningSystemWithInstruments(tunSysId) ?: return false
         return !tunSysWithInstruments.tuningSystem.default && tunSysWithInstruments.instruments.isEmpty()
@@ -55,8 +74,8 @@ class TuningSystemService (
     {
         //TODO
         return listOf(
-            Note(0L, 440.0, "A", "natural", 4, 1.0),
-            Note(1L, 493.88, "B", "natural", 4, 1.3)
+            Note(0L, 440.0, 4),
+            Note(1L, 493.88, 4)
         )
     }
 }

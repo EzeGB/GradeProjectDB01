@@ -36,6 +36,10 @@ interface TuningSystemDao {
     @Query("SELECT * FROM TuningSystem WHERE tunSysId = :tunSysId")
     fun observeTuningSystemById(tunSysId: Long): Flow<TuningSystem?>
 
+    @Query("SELECT * FROM TuningSystem WHERE" +
+            " algorithm=:algorithm AND baseFrequency=:baseFrequency")
+    fun getByAlgorithmAndBaseFrequency(algorithm:String, baseFrequency: Double): List<TuningSystem?>
+
     @Query("SELECT * FROM TuningSystem ORDER BY tunSysId ASC")
     fun observeAllTuningSystems(): Flow<List<TuningSystem>>
 

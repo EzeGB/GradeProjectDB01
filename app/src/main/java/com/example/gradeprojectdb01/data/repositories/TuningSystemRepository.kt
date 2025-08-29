@@ -31,6 +31,10 @@ class TuningSystemRepository(private val tuningSystemDao: TuningSystemDao) {
         return tuningSystemDao.observeTuningSystemById(tunSysId)
     }
 
+    fun getByAlgorithmAndBaseFrequency(algorithm: String,baseFrequency:Double): List<TuningSystem?>{
+        return tuningSystemDao.getByAlgorithmAndBaseFrequency(algorithm,baseFrequency)
+    }
+
     fun observeAllTuningSystems(): Flow<List<TuningSystem>> {
         return tuningSystemDao.observeAllTuningSystems()
     }
