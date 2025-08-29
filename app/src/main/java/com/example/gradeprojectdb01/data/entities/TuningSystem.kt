@@ -7,5 +7,6 @@ import androidx.room.PrimaryKey
 data class TuningSystem(
     @PrimaryKey (autoGenerate = true)
     val tunSysId: Long,
-    val algorithm: String
+    val algorithm: String,
+    val default: Boolean
 )
