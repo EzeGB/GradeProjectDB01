@@ -58,12 +58,6 @@ interface NoteDao {
     @Update
     suspend fun updateNotes(notes: List<Note>)
 
-    @Query("UPDATE Note SET name = :name WHERE noteId = :noteId")
-    suspend fun updateNoteName(noteId: Long, name:String)
-
-    @Query("UPDATE Note SET alteration = :alteration WHERE noteId = :noteId")
-    suspend fun updateNoteAlteration(noteId: Long, alteration:String)
-
     //DELETE BLOCK
     @Delete
     suspend fun deleteNote(note: Note)

@@ -18,7 +18,9 @@ import androidx.room.Index
 
     indices = [Index("instrumentId"), Index("noteId")]
     )
-data class InstrumentNoteCrossRef (
+data class InstrumentNote (
     var instrumentId: Long,
-    var noteId: Long
+    var noteId: Long,
+    val name: String,
+    val alteration: String
 )

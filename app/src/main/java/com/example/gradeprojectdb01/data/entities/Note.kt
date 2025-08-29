@@ -8,8 +8,5 @@ data class Note(
     @PrimaryKey (autoGenerate = true)
     val noteId: Long,
     val frequency: Double,
-    val name: String,
-    val alteration: String,
-    val octave: Int,
-    val relationToReference: Double
+    val octave: Int
 )

@@ -8,7 +8,7 @@ import com.example.gradeprojectdb01.data.entities.TunSysParameter
 import com.example.gradeprojectdb01.data.entities.TuningSystem
 import com.example.gradeprojectdb01.data.repositories.NoteRepository
 import com.example.gradeprojectdb01.data.repositories.TunSysParameterRepository
-import com.example.gradeprojectdb01.data.repositories.TuningSystemNoteCrossRefRepository
+import com.example.gradeprojectdb01.data.repositories.TuningSystemNoteRepository
 import com.example.gradeprojectdb01.data.repositories.TuningSystemRepository
 import com.example.gradeprojectdb01.data.services.TuningSystemService
 import kotlinx.coroutines.Dispatchers
@@ -27,7 +27,7 @@ class TuningSystemViewModel (application: Application): AndroidViewModel(applica
             TuningSystemRepository(tunSysDao),
             TunSysParameterRepository(tunSysParamDao),
             NoteRepository(noteDao),
-            TuningSystemNoteCrossRefRepository(tunSysNoteCrossRefDao)
+            TuningSystemNoteRepository(tunSysNoteCrossRefDao)
         )
     }
 
