@@ -31,6 +31,22 @@ class TuningSystemService (
         }
     }
 
+    suspend fun deleteTuningSystem(tuningSystemId:Long){
+        if (canDeleteTunSys(tuningSystemId)){
+            tunSysRepo.deleteTuningSystemById(tuningSystemId)
+        }
+    }
+
+    private fun tunSysMatchExists(): Boolean{
+        //TODO
+        return false
+    }
+
+    suspend fun canDeleteTunSys(tunSysId: Long): Boolean {
+        val tunSysWithInstruments = tunSysRepo.getTuningSystemWithInstruments(tunSysId) ?: return false
+        return !tunSysWithInstruments.tuningSystem.default && tunSysWithInstruments.instruments.isEmpty()
+    }
+
     private fun generateNotes(tuningSystem: TuningSystemWithParameters?):List<Note>
 
     {
