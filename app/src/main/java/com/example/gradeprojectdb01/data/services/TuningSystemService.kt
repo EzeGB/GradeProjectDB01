@@ -64,7 +64,7 @@ class TuningSystemService (
                 val candidateParams = tunSysRepo.getExistingTuningSystemWithParameters(
                     candidate.tunSysId).tunSysParams
 
-                //the parameters in the new one must be exactly the same of the candidate one to be a match
+                //the parameters in the new one must be exactly the same of the candidate to be a match
                 if (candidateParams.size == newParams.size &&
                     candidateParams.all { canParam ->
                         //all of the candidate parameters must match exactly with any of the new parameters
