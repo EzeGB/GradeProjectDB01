@@ -60,14 +60,6 @@ class NoteRepository (private val noteDao: NoteDao){
         noteDao.updateNotes(notes)
     }
 
-    suspend fun updateNoteName(noteId: Long, name: String) {
-        noteDao.updateNoteName(noteId, name)
-    }
-
-    suspend fun updateNoteAlteration(noteId: Long, alteration: String) {
-        noteDao.updateNoteAlteration(noteId, alteration)
-    }
-
     // DELETE
     suspend fun deleteNote(note: Note) {
         noteDao.deleteNote(note)

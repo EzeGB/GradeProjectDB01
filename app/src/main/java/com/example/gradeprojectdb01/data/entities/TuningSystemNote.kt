@@ -19,7 +19,10 @@ import androidx.room.Index
     indices = [Index("tunSysId"), Index("noteId")]
 )
 
-data class TuningSystemNoteCrossRef (
+data class TuningSystemNote (
     var tunSysId: Long,
-    var noteId: Long
-)
+    var noteId: Long,
+    val name: String,
+    val alteration: String,
+    val relationToReference: String
+    )

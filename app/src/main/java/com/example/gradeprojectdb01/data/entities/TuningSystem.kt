@@ -8,5 +8,6 @@ data class TuningSystem(
     @PrimaryKey (autoGenerate = true)
     val tunSysId: Long,
     val algorithm: String,
+    val baseFrequency: Double,
     val default: Boolean
 )
