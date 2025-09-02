@@ -7,6 +7,5 @@ import androidx.room.PrimaryKey
 data class Note(
     @PrimaryKey (autoGenerate = true)
     val noteId: Long,
-    val frequency: Double,
-    val octave: Int
+    val frequency: Double
 )
