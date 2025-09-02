@@ -1,6 +1,7 @@
 package com.example.gradeprojectdb01.data.services
 
 import androidx.room.Transaction
+import com.example.gradeprojectdb01.data.convertersAndEnums.ParamValType
 import com.example.gradeprojectdb01.data.entities.Note
 import com.example.gradeprojectdb01.data.entities.TunSysParameter
 import com.example.gradeprojectdb01.data.entities.TuningSystem
@@ -29,7 +30,7 @@ class TuningSystemService (
             val newTunSysId = tunSysRepo.insertTuningSystem(tuningSystem)
             tunSysParams.forEach {
                 it.tunSysId = newTunSysId
-                // TODO it.valueType = inferValueType(it.value)
+                it.valueType = inferValueType(it.value)
                 tunSysParamRepo.insertTunSysParameter(it)
             }
             val notes = generateNotes(tunSysRepo.getTuningSystemWithParameters(newTunSysId))
@@ -52,7 +53,7 @@ class TuningSystemService (
         }
     }
 
-    suspend fun findMatchingTunSys(newTunSys: TuningSystem, newParams: List<TunSysParameter>): Long? {
+    private suspend fun findMatchingTunSys(newTunSys: TuningSystem, newParams: List<TunSysParameter>): Long? {
         //finds tuning systems with same values
         val candidates = tunSysRepo.getByAlgorithmAndBaseFrequency(
             newTunSys.algorithm,
@@ -81,14 +82,19 @@ class TuningSystemService (
         }
         return null // No match
     }
-    suspend fun canDeleteTunSys(tunSysId: Long): Boolean {
+    private suspend fun canDeleteTunSys(tunSysId: Long): Boolean {
         val tunSysWithInstruments = tunSysRepo.getTuningSystemWithInstruments(tunSysId) ?: return false
         return !tunSysWithInstruments.tuningSystem.default && tunSysWithInstruments.instruments.isEmpty()
     }
+    private fun inferValueType(value:String): ParamValType{
+        return when {
+            value.toIntOrNull()!=null -> ParamValType.INT
+            value.toDoubleOrNull()!=null -> ParamValType.DOUBLE
+            else -> ParamValType.STRING
+        }
+    }
 
-    private fun generateNotes(tuningSystem: TuningSystemWithParameters?):List<Note>
-
-    {
+    private fun generateNotes(tuningSystem: TuningSystemWithParameters?):List<Note> {
         //TODO
         return listOf(
             Note(0L, 440.0, 4),

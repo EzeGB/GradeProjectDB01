@@ -16,7 +16,7 @@ data class TunSysParameter (
     @PrimaryKey (autoGenerate = true)
     val tunSysParamId: Long,
     var tunSysId: Long,
-    val valueType : ParamValType,
+    var valueType : ParamValType,
     val valueName: String,
     val value: String
 )
