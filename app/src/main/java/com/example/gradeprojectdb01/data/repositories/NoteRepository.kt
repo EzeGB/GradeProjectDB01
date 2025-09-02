@@ -22,6 +22,10 @@ class NoteRepository (private val noteDao: NoteDao){
         return noteDao.getNoteById(noteId)
     }
 
+    suspend fun getNoteByFrequency(noteFrequency:Double): Note?{
+        return noteDao.getNoteByFrequency(noteFrequency)
+    }
+
     suspend fun getAllNotes(): List<Note> {
         return noteDao.getAllNotes()
     }

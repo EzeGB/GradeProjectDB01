@@ -25,6 +25,9 @@ interface NoteDao {
     @Query("SELECT * FROM Note WHERE noteId = :noteId")
     suspend fun getNoteById(noteId: Long): Note?
 
+    @Query("SELECT * FROM Note WHERE frequency = :noteFrequency")
+    suspend fun getNoteByFrequency(noteFrequency: Double): Note?
+
     @Query("SELECT * FROM Note ORDER BY noteId ASC")
     suspend fun getAllNotes(): List<Note>
 

@@ -14,4 +14,15 @@ class TunSysParamTypeConverter {
     }
 }
 
-enum class ParamValType {INT, DOUBLE, STRING}
+enum class ParamValType {INT, DOUBLE, STRING;
+
+    companion object {
+        fun inferValueType(value: String): ParamValType {
+            return when {
+                value.toIntOrNull() != null -> INT
+                value.toDoubleOrNull() != null -> DOUBLE
+                else -> STRING
+            }
+        }
+    }
+}
