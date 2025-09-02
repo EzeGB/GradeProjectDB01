@@ -30,11 +30,11 @@ class TuningSystemService (
             val newTunSysId = tunSysRepo.insertTuningSystem(tuningSystem)
             tunSysParams.forEach {
                 it.tunSysId = newTunSysId
-                it.valueType = inferValueType(it.value)
+                it.valueType = ParamValType.inferValueType(it.value)
                 tunSysParamRepo.insertTunSysParameter(it)
             }
-            val notes = generateNotes(tunSysRepo.getTuningSystemWithParameters(newTunSysId))
-            val notesIds = noteRepo.insertAllNotes(notes)
+            val generatedNotes = generateNotes(tunSysRepo.getTuningSystemWithParameters(newTunSysId))
+            val notesIds = noteRepo.insertAllNotes(deduplicateNotes(generatedNotes))
             notesIds.forEach {
                 val reference = TuningSystemNote(newTunSysId, it, "", "", "")
                 tunSysNoteCrossRefRepo.insertTunSysNoteCrossRef(reference)
@@ -86,19 +86,26 @@ class TuningSystemService (
         val tunSysWithInstruments = tunSysRepo.getTuningSystemWithInstruments(tunSysId) ?: return false
         return !tunSysWithInstruments.tuningSystem.default && tunSysWithInstruments.instruments.isEmpty()
     }
-    private fun inferValueType(value:String): ParamValType{
-        return when {
-            value.toIntOrNull()!=null -> ParamValType.INT
-            value.toDoubleOrNull()!=null -> ParamValType.DOUBLE
-            else -> ParamValType.STRING
-        }
-    }
-
     private fun generateNotes(tuningSystem: TuningSystemWithParameters?):List<Note> {
         //TODO
         return listOf(
-            Note(0L, 440.0, 4),
-            Note(1L, 493.88, 4)
+            Note(0L, 440.0),
+            Note(1L, 493.88)
         )
+    }
+    private suspend fun deduplicateNotes(generatedNotes: List<Note>): List<Note>{
+        //I fetch all notes from DB and map them by Frequency
+        val existingNotesByFrequency= noteRepo.getAllNotes().associateBy { it.frequency }
+
+        //It checks if freq of genNotes already exists in DB. If it's the case
+        //The returned list will contain existing notes id's, which will just be replaced
+        //With all fields intact and old ID
+        return generatedNotes.map { genNote ->
+            val alreadyExists = existingNotesByFrequency[genNote.frequency]
+            if (alreadyExists !=null)
+                genNote.copy(noteId = alreadyExists.noteId)
+            else
+                genNote
+        }
     }
 }
