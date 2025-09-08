@@ -1,6 +1,7 @@
 package com.example.gradeprojectdb01.data.services
 
 import androidx.room.Transaction
+import com.example.gradeprojectdb01.data.NotesGenerator
 import com.example.gradeprojectdb01.data.convertersAndEnums.ParamValType
 import com.example.gradeprojectdb01.data.entities.Note
 import com.example.gradeprojectdb01.data.entities.TunSysParameter
@@ -31,8 +32,9 @@ class TuningSystemService (
             tunSysParams.forEach {
                 it.tunSysId = newTunSysId
                 it.valueType = ParamValType.inferValueType(it.value)
-                tunSysParamRepo.insertTunSysParameter(it)
             }
+            tunSysParamRepo.insertAllTunSysParameters(tunSysParams)
+
             val generatedNotes = generateNotes(tunSysRepo.getTuningSystemWithParameters(newTunSysId))
             val notesIds = noteRepo.insertAllNotes(deduplicateNotes(generatedNotes))
             notesIds.forEach {
@@ -46,6 +48,8 @@ class TuningSystemService (
 
     @Transaction
     suspend fun deleteTuningSystem(tuningSystemId:Long):Boolean{
+        //instrument changes which one it references, no real update to nor alter other instruments
+
         return if (canDeleteTunSys(tuningSystemId)){
             //We store notes that are not used in any other tunSys except this one to be deleted along with the tunSys
             val notesOfTunSys = tunSysRepo.getTuningSystemWithNotes(tuningSystemId)?.notes ?: emptyList()
@@ -57,6 +61,28 @@ class TuningSystemService (
             true
         } else {
             false
+        }
+    }
+
+    @Transaction
+    suspend fun updateTuningSystem(tuningSystem: TuningSystem, tunSysParams:List<TunSysParameter>): Long {
+        return if (!tuningSystem.default) {
+            val newTunSys = TuningSystem(
+                0,
+                tuningSystem.algorithm,
+                tuningSystem.baseFrequency,
+                false
+            )
+            val newTunSysId = createTuningSystem(newTunSys, tunSysParams)
+            if (deleteTuningSystem(tuningSystem.tunSysId)) {
+                //the og tunSys didn't have any instrument, so it was deleted, and new one is associated to new Inst
+            } else {
+                //og still associated to another instrument, is not deleted. In either case, instrument changes which one it references
+            }
+            newTunSysId
+        } else {
+            // default tuning system cannot be updated
+            tuningSystem.tunSysId
         }
     }
 
@@ -104,11 +130,7 @@ class TuningSystemService (
     }
 
     private fun generateNotes(tuningSystem: TuningSystemWithParameters?):List<Note> {
-        //TODO
-        return listOf(
-            Note(0L, 440.0),
-            Note(1L, 493.88)
-        )
+        return NotesGenerator().generateNotes()
     }
 
     private suspend fun deduplicateNotes(generatedNotes: List<Note>): List<Note>{
