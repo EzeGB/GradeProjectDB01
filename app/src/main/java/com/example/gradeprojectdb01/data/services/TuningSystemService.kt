@@ -1,6 +1,7 @@
 package com.example.gradeprojectdb01.data.services
 
 import androidx.room.Transaction
+import com.example.gradeprojectdb01.data.NotesGenerator
 import com.example.gradeprojectdb01.data.convertersAndEnums.ParamValType
 import com.example.gradeprojectdb01.data.entities.Note
 import com.example.gradeprojectdb01.data.entities.TunSysParameter
@@ -129,11 +130,7 @@ class TuningSystemService (
     }
 
     private fun generateNotes(tuningSystem: TuningSystemWithParameters?):List<Note> {
-        //TODO
-        return listOf(
-            Note(0L, 440.0),
-            Note(1L, 493.88)
-        )
+        return NotesGenerator().generateNotes()
     }
 
     private suspend fun deduplicateNotes(generatedNotes: List<Note>): List<Note>{
